@@ -8,6 +8,32 @@ A Maven plugin for Mantis integration.
 Based on the [Mantis SOAP API](http://www.mantisbt.org/wiki/doku.php/mantisbt:faq#does_mantisbt_provide_a_webservice_interface) (Web Service).  
 Live test of the web service on the MantisBT site : [Test it](http://www.mantisbt.org/bugs/api/soap/mantisconnect.php) ([WSDL](http://www.mantisbt.org/bugs/api/soap/mantisconnect.php?wsdl)).
 
+Configuration
+-------------
+
+This plugin requires the following information:
+* Mantis URL: absolute URL to Mantis home (i.e.: http://mantis.org/bt)
+* Mantis username: username to authenticate in Mantis 
+* Mantis password: password to authenticate in Mantis
+* Mantis project name: where the version should be added
+* Deprecate Olders: flag to mark older versions as obsolete on goal **add-project-version**
+
+Configuration properties were moved to the configuration section inside the plugin in the `pom.xml` and username and password can now be defined in `~/.m2/settings.xml` file:
+
+```xml
+<plugin>
+	<groupId>com.identicum.utils</groupId>
+	<artifactId>mantis-maven-plugin</artifactId>
+	<version>0.3-SNAPSHOT</version>
+	<configuration>
+		<server>bt</server><!-- server in settings.xml -->
+		<url>http://10.1.1.153/btora/</url>
+		<projectName>Identicum - IRM</projectName>
+		<deprecateOlders>true</deprecateOlders>
+	</configuration>
+</plugin>
+``` 
+
 Goals
 -----
 1. **mantis:add-project-version** - Create a project's version.  
