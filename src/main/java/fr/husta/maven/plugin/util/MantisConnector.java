@@ -78,6 +78,11 @@ public class MantisConnector {
 		this.mantisConnectPortType.mc_project_version_add(username, password,
 				versionData);
 	}
+	
+	public void updateProjectVersion(String username, String password, ProjectVersionData versionData) throws RemoteException {
+		
+		this.mantisConnectPortType.mc_project_version_update(username, password, versionData.getId(), versionData);
+	}
 
 	/**
 	 * Return a list of ProjectVersionData for the project.

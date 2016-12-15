@@ -10,7 +10,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
@@ -28,9 +27,6 @@ public class DisplayProjectVersionsMojo extends AbstractSecureMantisMojo
     @Component
     protected MavenProject project;
 
-    @Parameter(property = "mantis.projectName", defaultValue = "${project.artifactId}", required = true)
-    protected String projectName;
-
     public void execute() throws MojoExecutionException, MojoFailureException
     {
 
@@ -43,9 +39,9 @@ public class DisplayProjectVersionsMojo extends AbstractSecureMantisMojo
             getLog().debug("projectName = '" + projectName + "'");
 
             // find ProjectId from Name
-            BigInteger projectId = mantisConnector.getProjectIdByName(login, password, projectName);
+            BigInteger projectId = mantisConnector.getProjectIdByName(this.getLogin(), this.getPassword(), projectName);
             // call to web service method
-            ProjectVersionData[] projectVersions = mantisConnector.getProjectVersions(login, password,
+            ProjectVersionData[] projectVersions = mantisConnector.getProjectVersions(this.getLogin(), this.getPassword(),
                     projectId);
             // TODO: sort versions
 
@@ -91,9 +87,9 @@ public class DisplayProjectVersionsMojo extends AbstractSecureMantisMojo
     private void displayVersion(ProjectVersionData projectVersionData)
     {
         getLog().info(
-                "*" + StringUtils.left(projectVersionData.getName(), 30) + "*"
-                        + StringUtils.center(projectVersionData.getReleased() ? "X" : " ", 20) + "*"
-                        + StringUtils.center(projectVersionData.getObsolete() ? "X" : " ", 20) + "*");
+                "*" + StringUtils.center( projectVersionData.getName(), 30) + "*"
+                    + StringUtils.center(projectVersionData.getReleased() ? "X" : " ", 20) + "*"
+                    + StringUtils.center(projectVersionData.getObsolete() ? "X" : " ", 20) + "*");
     }
 
 }

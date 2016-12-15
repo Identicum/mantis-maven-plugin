@@ -29,7 +29,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
-
+import biz.futureware.mantis.rpc.soap.client.ProjectVersionData;
 import fr.husta.maven.plugin.util.MantisConnector;
 import fr.husta.maven.plugin.util.MantisUtils;
 import fr.husta.maven.plugin.util.ReleaseUtils;
@@ -44,11 +44,12 @@ public class AddProjectVersionMojo extends AbstractSecureMantisMojo
     @Component
     protected MavenProject project;
 
-    @Parameter(property = "mantis.projectName", defaultValue = "${project.artifactId}", required = true)
-    protected String projectName;
-
     @Parameter(property = "mantis.versionName", defaultValue = "${project.version}", required = true)
     protected String versionName;
+    
+    @Parameter(property = "maven.mantis.deprecateOlders", defaultValue = "false")
+    protected String deprecateOlders;
+    
 
     protected IssueManagement issueManagement;
 
@@ -77,11 +78,30 @@ public class AddProjectVersionMojo extends AbstractSecureMantisMojo
             getLog().debug("projectName = '" + projectName + "'");
 
             // find ProjectId from Name
-            BigInteger projectId = mantisConnector.getProjectIdByName(login, password, projectName);
+            BigInteger projectId = mantisConnector.getProjectIdByName(this.getLogin(), this.getPassword(), projectName);
+            
+            getLog().debug("deprecateOlders = " + deprecateOlders);
+            
+            if("true".equalsIgnoreCase(this.deprecateOlders))
+            {
+            	getLog().info("Updating previous version as obsolete");
+            	ProjectVersionData[] projectVersions = mantisConnector.getProjectVersions(this.getLogin(), this.getPassword(), projectId);
+            	for(ProjectVersionData projectVersion : projectVersions)
+            	{
+            		getLog().debug("Version " + projectVersion.getName() + " has obsolete flag set in " + projectVersion.getObsolete());
+            		if(projectVersion.getObsolete().equals(Boolean.FALSE))
+            		{
+            			getLog().debug("Updating version " + projectVersion.getName());
+            			projectVersion.setObsolete(Boolean.TRUE);
+            			mantisConnector.updateProjectVersion( this.getLogin(), this.getPassword(), projectVersion);
+            		}
+            	}
+            }
+            
             // call to web service method
             String releaseVersion = ReleaseUtils.getReleaseVersion(versionName);
             getLog().info("Version '" + releaseVersion + "' to be created.");
-            mantisConnector.addProjectVersion(login, password, projectId, releaseVersion);
+            mantisConnector.addProjectVersion(this.getLogin(), this.getPassword(), projectId, releaseVersion);
             getLog().info("Version '" + releaseVersion + "' created in Mantis.");
 
         }

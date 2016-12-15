@@ -1,5 +1,7 @@
 package fr.husta.maven.plugin;
 
+import java.net.URL;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -17,8 +19,8 @@ public abstract class AbstractMantisMojo extends AbstractMojo
      * Complete Mantis server web URI including protocol and port number.
      * Example: http://localhost:80/mantis/
      */
-    @Parameter(property = "mantis.host.url", required = true)
-    protected String mantisHostUrl;
+    @Parameter(property = "maven.mantis.url", required = true)
+    protected URL url;
 
     /**
      * Get the full URL for the SOAP API.
@@ -28,9 +30,9 @@ public abstract class AbstractMantisMojo extends AbstractMojo
     protected String getMantisSoapApiUrl()
     {
         String res = null;
-        if (mantisHostUrl != null)
+        if (url != null)
         {
-            res = mantisHostUrl + MantisUtils.SOAP_API_URL_SUFFIX;
+            res = url.toString() + MantisUtils.SOAP_API_URL_SUFFIX;
         }
 
         return res;

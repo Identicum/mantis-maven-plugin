@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>fr.husta.maven.plugin</groupId>
+	<groupId>com.identicum.utils</groupId>
 	<artifactId>mantis-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 
 	<name>mantis-maven-plugin : Maven plugin for Mantis</name>
 	<description>A Maven plugin for Mantis integration</description>
@@ -16,13 +16,13 @@
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/ghusta/mantis-maven-plugin/issues</url>
+		<url>https://github.com/identicum/mantis-maven-plugin/issues</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:git:git://github.com/ghusta/mantis-maven-plugin.git</connection>
-		<developerConnection>scm:git:git@github.com:ghusta/mantis-maven-plugin.git</developerConnection>
-		<url>https://github.com/ghusta/mantis-maven-plugin</url>
+		<connection>scm:git:git://github.com/identicum/mantis-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:identicum/mantis-maven-plugin.git</developerConnection>
+		<url>https://github.com/identicum/mantis-maven-plugin</url>
 	</scm>
 
 	<inceptionYear>2012</inceptionYear>
@@ -33,11 +33,15 @@
 			<name>Guillaume Husta</name>
 			<url>https://github.com/ghusta</url>
 		</developer>
+		<developer>
+			<id>chupetoide</id>
+			<name>Nicolas Rossi</name>
+			<url>https://github.com/chupetoide</url>
+		</developer>
 	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<maven.version>2.2.1</maven.version>
 	</properties>
 
@@ -53,8 +57,8 @@
 				<version>3.0</version>
 				<configuration>
 					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
@@ -65,7 +69,6 @@
 				<version>3.2</version>
 				<configuration>
 					<goalPrefix>mantis</goalPrefix>
-
 					<!-- see http://jira.codehaus.org/browse/MNG-5346 -->
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 				</configuration>
